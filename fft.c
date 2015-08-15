@@ -77,7 +77,7 @@ void fft(short *x) {
 void ram(void) {
 
   int counter = 0;
-  int scale = 1;
+  int scale = 8;
   int offset = 0;
 	int y,x;
   int channel = ADC_CR_CH7;
@@ -112,9 +112,9 @@ void ram(void) {
         fft(data);
 
         for (x=0; x < 130; x++) {
-          lcdSetPixel(x, (data[(x * 2) + offset] / scale) - 1, RGB(0xFF,0xFF,0xFF));
-          lcdSetPixel(x, data[(x * 2) + offset] / scale, RGB(0xFF,0xFF,0xFF));
-          lcdSetPixel(x, (data[(x * 2) + offset] / scale) + 1, RGB(0xFF,0xFF,0xFF));
+          //lcdSetPixel(x, (data[(x + offset) * 2] / scale) - 1, RGB(0xFF,0xFF,0xFF));
+          lcdSetPixel(x, data[(x + offset) * 2] / scale, RGB(0xFF,0xFF,0xFF));
+          //lcdSetPixel(x, (data[(x + offset) * 2] / scale) + 1, RGB(0xFF,0xFF,0xFF));
       	}
 
         lcd_deselect();
@@ -126,15 +126,19 @@ void ram(void) {
         counter = 0;
       } else {
         data[counter * 2] = adc_get_single(ADC0,channel);
+        data[(counter * 2) + 1] = 0;
+
         //data[counter * 2] = 30;
         counter++;
       }
+      delay(0);
 		}
 		if(getInputRaw() == BTN_ENTER) {
 			return;
 		}
 		if(getInputRaw() == BTN_LEFT) {
-      // Tests here
+      offset++;
+      delayms(50);
 		}
 	}
 }
