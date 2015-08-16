@@ -2,6 +2,8 @@
 #include <libopencm3/lpc43xx/scu.h>
 #include <libopencm3/lpc43xx/dac.h>
 #include <libopencm3/lpc43xx/adc.h>
+#include <libopencm3/lpc43xx/cgu.h>
+#include <libopencm3/cm3/systick.h>
 
 #include <rad1olib/setup.h>
 #include <rad1olib/pins.h>
@@ -76,8 +78,11 @@ void fft(short *x) {
 
 void ram(void) {
 
+  // cpu_clock_init();
+  // cpu_clock_set(204);
+  int mode = 1;
   int counter = 0;
-  int scale = 8;
+  int scale = 1;
   int offset = 0;
 	int y,x;
   int channel = ADC_CR_CH7;
@@ -109,11 +114,13 @@ void ram(void) {
       		lcdSetPixel(x, 64, RGB(0xFF,0x00,0xFF));
       	}
 
-        fft(data);
+        if (mode) {
+          fft(data);
+        }
 
         for (x=0; x < 130; x++) {
           //lcdSetPixel(x, (data[(x + offset) * 2] / scale) - 1, RGB(0xFF,0xFF,0xFF));
-          lcdSetPixel(x, data[(x + offset) * 2] / scale, RGB(0xFF,0xFF,0xFF));
+          lcdSetPixel(x, data[(x + offset) * 2] * 2, RGB(0xFF,0xFF,0xFF));
           //lcdSetPixel(x, (data[(x + offset) * 2] / scale) + 1, RGB(0xFF,0xFF,0xFF));
       	}
 
@@ -131,14 +138,18 @@ void ram(void) {
         //data[counter * 2] = 30;
         counter++;
       }
-      delay(0);
+      //delayms(1);
 		}
 		if(getInputRaw() == BTN_ENTER) {
 			return;
 		}
 		if(getInputRaw() == BTN_LEFT) {
-      offset++;
-      delayms(50);
+      if (mode) {
+        mode = 0;
+      } else {
+        mode = 1;
+      }
+      delayms(250);
 		}
 	}
 }
