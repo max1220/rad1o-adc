@@ -1,3 +1,40 @@
+rad1o-stuff
+===========
+
+Stuff that might be usefull for owners of a rad1o-badge.
+
+
+flash.lua
+=========
+
+This lua script searches dmesg for the device for the rad1o badge, mounts
+it, copys the files in the files table to the mountpoint, unmounts it & then
+syncs the filesystem. This is usefull if you don't want to mount it all the
+time manually, and don't like the flashgui, like me does. It is quite save,
+since it checks the ammount of blocks on the drive. (So if you don't have a
+HDD with 3072 512-byte logical blocks, you shouldn't need to worry.)
+
+
+Dependencys
+-----------
+Lua 5.1/5.2/5.3
+(You'll also need access to the shell tools dmesg, cp, mount, umount and sync)
+
+
+Installation
+------------
+Just copy the file somewhere, and edit the file table.
+
+
+Usage
+-----
+./flash.lua
+(Does not take any arguments)
+
+
+
+
+
 Build
 =====
 
@@ -13,29 +50,25 @@ Your new line should look like this:
 The build as normal.
 
 
-Use
-===
-
-plot
-----
-
-For best performance & stability, start using the testapp:
-
-Set the CPU speed to max in the speed submenu, and run using execute.
-The CPU might get hot, so use with care & <b>don't burn your finger</b>
-
-Left changes from FFT to Amplitude plot and vice versa.
-
-By default, the headset ADC input is used, but this is easily changed in plot.c on line 88.
-Try channel 1 for some fun with GND.
-
-echo
-----
-This example just ciopys the value from the ADC to the DAC.
 
 
-Todo
-====
+plot.c & echo.c
+===============
 
- * Multichannel support
- * Figure out why plot crashes when loaded via camp app.
+To build these, you need to copy them to the l0dables directory, and modify
+your l0dables/Makefile In the first line(C1D=...) add plot.c1d and echo.c1d.
+
+
+echo.c
+------
+
+Copys the value from the DAC to the ADC.
+
+
+plot.c
+------
+
+Displays a plot of either the FFT or the Amplitude plot of the various ADC
+channels. Try Channel 0 for some fun with GND!
+
+
