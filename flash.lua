@@ -51,7 +51,7 @@ end
 
 -- Check if we're already mounted
 local mounts_p = io.popen("mount")
-local mount = mount_p:read("*a"):match(dev .. " on (.-) type")
+local mount = mounts_p:read("*a"):match(dev .. " on (.-) type")
 if mount then
 	print("Already mounted!")
 end
