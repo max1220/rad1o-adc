@@ -35,8 +35,8 @@ Usage
 
 
 
-plot.c & echo.c
-===============
+plot.c, echo.c, lambda.c
+========================
 
 To build these, you need to copy them to the l0dables directory, and modify
 your l0dables/Makefile In the first line(C1D=...) add plot.c1d and echo.c1d.
@@ -48,6 +48,7 @@ echo.c
 Copys the value from the DAC to the ADC.
 
 
+
 plot.c
 ------
 
@@ -55,3 +56,8 @@ Displays a plot of either the FFT or the Amplitude plot of the various ADC
 channels. Try Channel 0 for some fun with GND!
 
 
+
+lambda.c
+--------
+
+This is a simple Lambda calculator, usefull for wire antennas.
